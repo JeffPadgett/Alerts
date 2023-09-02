@@ -1,20 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace Alerts.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class WebhookController : ControllerBase
+    public class TwitchWebHookController : ControllerBase
     {
         [HttpPost]
-        public IActionResult ReceiveWebhook([FromBody] object payload)
+        public async Task<IActionResult> ReceiveWebhook()
         {
-            // TODO: Add your logic here to handle the incoming payload
-            // For demonstration purposes, we'll just print it to the console.
-            Console.WriteLine($"Received Payload: {payload}");
+            if (Request.Headers.ContainsKey("Twitch-Eventsub-Message-Type"))
+            {
+                string messageType = Request.Headers["Twitch-Eventsub-Message-Type"];
+                if (messageType == "webhook_callback_verification")
+                {
+                    
+                }
+            }
 
-            // Respond with a status code indicating success
-            return Ok(new { status = "Received" });
+        }
+
+        private async Task<string> VerifySignature(HttpRequest req)
+        {
+            using StreamReader reader = new StreamReader(Request.Body);
+            string requestBody = await reader.ReadToEndAsync();
+
+            ChallengeJson callbackJson = JsonSerializer.Deserialize<ChallengeJson>(requestBody);
+
+
         }
     }
     
