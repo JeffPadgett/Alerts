@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Alerts.Core.Models
+namespace Alerts.Core.Dto
 {
 
     public class Subscription
