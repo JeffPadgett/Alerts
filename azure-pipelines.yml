@@ -6,7 +6,7 @@
 trigger:
 - main
 
-pool: padgett-local-computer
+pool: azure pipelines
 
 variables:
   solution: '**/*.sln'
