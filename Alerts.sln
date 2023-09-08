@@ -5,9 +5,13 @@ VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alerts.Api", "Alerts.Api\Alerts.Api.csproj", "{91E364DE-A7AB-4AD8-A780-28D173456974}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alerts.TokenManagement", "Alerts.TokenManagement\Alerts.TokenManagement.csproj", "{E5D17519-05EF-497C-B407-4DF540187BB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alerts.TokenManagement", "Alerts.TokenManagement\Alerts.TokenManagement.csproj", "{E5D17519-05EF-497C-B407-4DF540187BB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alerts.Core", "Alerts.Core\Alerts.Core.csproj", "{9C5588B5-D053-4F83-8A6F-4DAC19A43088}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Alerts.Core", "Alerts.Core\Alerts.Core.csproj", "{9C5588B5-D053-4F83-8A6F-4DAC19A43088}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{880DB91D-8FD3-442E-921C-72894F60FE48}"
+EndProject
+Project("{151D2E53-A2C4-4D7D-83FE-D05416EBD58E}") = "Alerts.ARM", "Alerts.ARM\Alerts.ARM.deployproj", "{87641475-5A75-4F59-816F-DF399EA0BCD5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,9 +31,16 @@ Global
 		{9C5588B5-D053-4F83-8A6F-4DAC19A43088}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C5588B5-D053-4F83-8A6F-4DAC19A43088}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C5588B5-D053-4F83-8A6F-4DAC19A43088}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87641475-5A75-4F59-816F-DF399EA0BCD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87641475-5A75-4F59-816F-DF399EA0BCD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87641475-5A75-4F59-816F-DF399EA0BCD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87641475-5A75-4F59-816F-DF399EA0BCD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{87641475-5A75-4F59-816F-DF399EA0BCD5} = {880DB91D-8FD3-442E-921C-72894F60FE48}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {650E6F9A-0608-448B-94AE-511A8138DFC1}
