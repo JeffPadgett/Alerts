@@ -1,14 +1,14 @@
-﻿param mainKeyVaultName string
-param mainLocation string = resourceGroup().location
-param mainSkuName string = 'standard'
+﻿param keyVaultName string
+param location string = resourceGroup().location
+param skuName string = 'standard'
 param alertsPipelineObjectId string
 
 module keyVaultModule './keyvault.bicep' = {
   name: 'keyVaultDeployment'
   params: {
-    keyVaultName: mainKeyVaultName
-    location: mainLocation
-    skuName: mainSkuName
+    keyVaultName: keyVaultName
+    location: location
+    skuName: skuName
     alertsPipelineObjectId: alertsPipelineObjectId
   }
 }
