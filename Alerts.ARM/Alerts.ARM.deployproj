@@ -23,12 +23,16 @@
   <Import Condition=" Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets') " Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Deployment\1.1\DeploymentProject.targets" />
   <!-- vertag<:>end -->
   <ItemGroup>
+    <None Include="Core\main.bicep" />
+    <None Include="Core\parameters.core.json" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
     <None Include="keyvault.bicep" />
     <None Include="main.bicep" />
     <None Include="parameters.dev.json" />
+    <None Include="Core\appService.bicep" />
+    <None Include="Core\appServicePlan.bicep" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
   <ProjectExtensions>
