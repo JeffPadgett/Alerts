@@ -26,7 +26,7 @@ steps:
   
   # Copy the rest of the paramater files into the directory so all .json files are available. 
 - script: |
-    copy $(Build.SourcesDirectory)\Alerts.ARM\parameters.*.json $(Build.ArtifactStagingDirectory)/armtemplates
+    copy $(Build.SourcesDirectory)\Alerts.ARM\*.json $(Build.ArtifactStagingDirectory)/armtemplates
   displayName: 'Copy all parameter files to staging directory'
 
 # Do our build
