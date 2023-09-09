@@ -19,8 +19,10 @@ steps:
   displayName: 'Install Bicep CLI'
 
 - powershell: |
+    New-Item -Path $(Build.ArtifactStagingDirectory)/armtemplates -ItemType Directory -Force
     .\bicep.exe build $(Build.SourcesDirectory)\Alerts.ARM\main.bicep --outdir $(Build.ArtifactStagingDirectory)/armtemplates
   displayName: 'Transpile Bicep to ARM'
+
 
 # Do our build
 - task: NuGetToolInstaller@1
