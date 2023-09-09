@@ -20,16 +20,32 @@ steps:
 
 # Make sure that the directory armtemplates exist so we can put the transpiled .json file into it. We then run the transpile command. 
 - powershell: |
-    New-Item -Path $(Build.ArtifactStagingDirectory)/armtemplates -ItemType Directory -Force
-    .\bicep.exe build $(Build.SourcesDirectory)\Alerts.ARM\main.bicep --outdir $(Build.ArtifactStagingDirectory)/armtemplates
-  displayName: 'Transpile Bicep to ARM'
-  
-  # Copy the rest of the paramater files into the directory so all .json files are available. 
+    New-Item -Path $(Build.ArtifactStagingDirectory)/coreArmTemplates -ItemType Directory -Force
+    .\bicep.exe build $(Build.SourcesDirectory)\Alerts.ARM\Core\main.bicep --outdir $(Build.ArtifactStagingDirectory)/coreArmTemplates
+  displayName: 'Transpile Core resources to ARM'
+
+
+# Make sure that the directory armtemplates exist so we can put the transpiled .json file into it. We then run the transpile command. 
+- powershell: |
+    New-Item -Path $(Build.ArtifactStagingDirectory)/appArmTemplates -ItemType Directory -Force
+    .\bicep.exe build $(Build.SourcesDirectory)\Alerts.ARM\main.bicep --outdir $(Build.ArtifactStagingDirectory)/appArmTemplates
+  displayName: 'Transpile App Specific resources to ARM'
+
+
+# Copy the rest of the core paramater files into the directory so all .json files are available. 
+- powershell: |
+    Get-ChildItem -Path "$(Build.SourcesDirectory)\Alerts.ARM\Core\parameters.*.json" | ForEach-Object {
+        Copy-Item -Path $_.FullName -Destination "$(Build.ArtifactStagingDirectory)/coreArmTemplates"
+    }
+  displayName: 'Copy all core parameter files to staging directory using PowerShell'
+
+
+# Copy the rest of the app secific paramater files into the directory so all .json files are available. 
 - powershell: |
     Get-ChildItem -Path "$(Build.SourcesDirectory)\Alerts.ARM\parameters.*.json" | ForEach-Object {
-        Copy-Item -Path $_.FullName -Destination "$(Build.ArtifactStagingDirectory)/armtemplates"
+        Copy-Item -Path $_.FullName -Destination "$(Build.ArtifactStagingDirectory)/appArmTemplates"
     }
-  displayName: 'Copy all parameter files to staging directory using PowerShell'
+  displayName: 'Copy all app specific parameter files to staging directory using PowerShell'
 
 
 # Do our build
@@ -58,10 +74,19 @@ steps:
     artifactName: 'api'
     publishLocation: 'Container'
 
+
 # Publish ARM Templates
 - task: PublishBuildArtifacts@1
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)/armtemplates' 
-    artifactName: 'drop'
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/appArmTemplates' 
+    artifactName: 'appArmTemplates'
+    publishLocation: 'Container'
+
+
+# Publish ARM Templates
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/coreArmTemplates' 
+    artifactName: 'coreArmTemplates'
     publishLocation: 'Container'
 
