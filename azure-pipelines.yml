@@ -25,9 +25,12 @@ steps:
   displayName: 'Transpile Bicep to ARM'
   
   # Copy the rest of the paramater files into the directory so all .json files are available. 
-- script: |
-    copy $(Build.SourcesDirectory)\Alerts.ARM\*.json $(Build.ArtifactStagingDirectory)/armtemplates
-  displayName: 'Copy all parameter files to staging directory'
+- powershell: |
+    Get-ChildItem -Path "$(Build.SourcesDirectory)\Alerts.ARM\parameters.*.json" | ForEach-Object {
+        Copy-Item -Path $_.FullName -Destination "$(Build.ArtifactStagingDirectory)/armtemplates"
+    }
+  displayName: 'Copy all parameter files to staging directory using PowerShell'
+
 
 # Do our build
 - task: NuGetToolInstaller@1
