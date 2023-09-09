@@ -1,7 +1,7 @@
 ﻿{
   "parameters": {
     "keyVaultName": {
-      "value": "kv-alerts-dev"
+      "value": "kv-alerts-dev-jp"
     },
     "location": {
       "value": "East US"
