@@ -23,7 +23,6 @@ namespace Alerts.Api.Controllers
             }
 
             return default; 
-
         }
 
         private async Task<string> VerifySignature(HttpRequest req)

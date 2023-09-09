@@ -27,6 +27,8 @@
       <Visible>False</Visible>
     </None>
     <None Include="keyvault.bicep" />
+    <None Include="main.bicep" />
+    <None Include="parameters.dev.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
   <ProjectExtensions>

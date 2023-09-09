@@ -1,0 +1,13 @@
+﻿{
+  "parameters": {
+    "keyVaultName": {
+      "value": "kv-alerts-dev"
+    },
+    "location": {
+      "value": "East US"
+    },
+    "skuName": {
+      "value": "standard"
+    }
+  }
+}
