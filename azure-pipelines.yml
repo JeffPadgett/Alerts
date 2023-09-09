@@ -38,5 +38,5 @@ steps:
     configuration: '$(buildConfiguration)'
     
 - powershell: |
-    $(Build.SourcesDirectory)\Infrastructure\Alerts.ARM\main.bicep
+    $(Build.SourcesDirectory)\Alerts.ARM\main.bicep
   displayName: 'Transpile Bicep to ARM'
