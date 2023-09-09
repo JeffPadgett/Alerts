@@ -18,6 +18,7 @@ steps:
     .\bicep.exe --version
   displayName: 'Install Bicep CLI'
 
+# Make sure that the directory armtemplates exist so we can put the transpiled .json file into it. We then run the transpile command. 
 - powershell: |
     New-Item -Path $(Build.ArtifactStagingDirectory)/armtemplates -ItemType Directory -Force
     .\bicep.exe build $(Build.SourcesDirectory)\Alerts.ARM\main.bicep --outdir $(Build.ArtifactStagingDirectory)/armtemplates
@@ -27,8 +28,6 @@ steps:
 - script: |
     copy $(Build.SourcesDirectory)\Alerts.ARM\parameters.*.json $(Build.ArtifactStagingDirectory)/armtemplates
   displayName: 'Copy all parameter files to staging directory'
-
-
 
 # Do our build
 - task: NuGetToolInstaller@1
