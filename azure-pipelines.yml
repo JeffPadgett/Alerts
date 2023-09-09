@@ -22,6 +22,12 @@ steps:
     New-Item -Path $(Build.ArtifactStagingDirectory)/armtemplates -ItemType Directory -Force
     .\bicep.exe build $(Build.SourcesDirectory)\Alerts.ARM\main.bicep --outdir $(Build.ArtifactStagingDirectory)/armtemplates
   displayName: 'Transpile Bicep to ARM'
+  
+  # Copy the rest of the paramater files into the directory so all .json files are available. 
+- script: |
+    copy $(Build.SourcesDirectory)\Alerts.ARM\parameters.*.json $(Build.ArtifactStagingDirectory)/armtemplates
+  displayName: 'Copy all parameter files to staging directory'
+
 
 
 # Do our build
