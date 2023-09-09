@@ -6,7 +6,8 @@
 trigger:
 - main
 
-pool: azure pipelines
+pool:
+  vmImage: 'windows-latest'
 
 variables:
   solution: '**/*.sln'
