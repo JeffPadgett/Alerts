@@ -1,12 +1,10 @@
-# ASP.NET
-# Build and test ASP.NET projects.
-# Add steps that publish symbols, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+
 
 trigger:
 - main
 
-pool: azure pipelines
+pool:
+  vmImage: 'windows-latest'
 
 variables:
   solution: '**/*.sln'
@@ -14,6 +12,13 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
+# Install all of the dependencies on the agent 
+- powershell: |
+    Invoke-WebRequest -Uri "https://github.com/Azure/bicep/releases/latest/download/bicep-win-x64.exe" -OutFile "bicep.exe"
+    .\bicep.exe --version
+  displayName: 'Install Bicep CLI'
+
+# Do our build
 - task: NuGetToolInstaller@1
 
 - task: NuGetCommand@2
@@ -31,3 +36,7 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+    
+- powershell: |
+    $(Build.SourcesDirectory)\Alerts.ARM\main.bicep
+  displayName: 'Transpile Bicep to ARM'
