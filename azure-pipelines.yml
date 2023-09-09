@@ -18,6 +18,18 @@ steps:
     .\bicep.exe --version
   displayName: 'Install Bicep CLI'
 
+- powershell: |
+    New-Item -Path $(Build.ArtifactStagingDirectory)/armtemplates -ItemType Directory -Force
+    .\bicep.exe build $(Build.SourcesDirectory)\Alerts.ARM\main.bicep --outdir $(Build.ArtifactStagingDirectory)/armtemplates
+  displayName: 'Transpile Bicep to ARM'
+  
+  # Copy the rest of the paramater files into the directory so all .json files are available. 
+- script: |
+    copy $(Build.SourcesDirectory)\Alerts.ARM\parameters.*.json $(Build.ArtifactStagingDirectory)/armtemplates
+  displayName: 'Copy all parameter files to staging directory'
+
+
+
 # Do our build
 - task: NuGetToolInstaller@1
 
@@ -28,7 +40,7 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)/AlertsApi.zip"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
@@ -37,6 +49,17 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
     
-- powershell: |
-    $(Build.SourcesDirectory)\Alerts.ARM\main.bicep
-  displayName: 'Transpile Bicep to ARM'
+# Publish the API as ZIP (assuming the output of VSBuild is a ZIP)
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(build.artifactStagingDirectory)/AlertsApi.zip'
+    artifactName: 'api'
+    publishLocation: 'Container'
+
+# Publish ARM Templates
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)/armtemplates' 
+    artifactName: 'drop'
+    publishLocation: 'Container'
+
