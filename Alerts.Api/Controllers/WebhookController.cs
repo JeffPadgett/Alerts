@@ -50,8 +50,6 @@ namespace Alerts.Api.Controllers
                 return BitConverter.ToString(hmacBytes).Replace("-", "").ToLower();
             }
         }
-
-
     }
 
 }
