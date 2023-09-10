@@ -2,6 +2,7 @@
 param location string = resourceGroup().location
 param skuName string = 'standard'
 param alertsPipelineObjectId string
+param appPrincipalId string
 
 module keyVaultModule './keyvault.bicep' = {
   name: 'keyVaultDeployment'
@@ -10,6 +11,6 @@ module keyVaultModule './keyvault.bicep' = {
     location: location
     skuName: skuName
     alertsPipelineObjectId: alertsPipelineObjectId
-    appServicePrincipalId: appService.outputs.identity.principalId
+    appPrincipalId: appPrincipalId
   }
 }
