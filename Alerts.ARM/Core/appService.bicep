@@ -15,8 +15,13 @@ resource appService 'Microsoft.Web/sites@2021-01-01' = {
         }
       ]
       netFrameworkVersion: 'v6.0'
-    }
+    } 
+  }
+  identity: {
+    type:'SystemAssigned'
   }
 }
 
 output appServiceUrl string = appService.properties.defaultHostName
+output managedIdentityPrincipalId string = appService.identity.principalId
+

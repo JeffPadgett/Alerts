@@ -21,3 +21,4 @@ module appServiceModule './appService.bicep' = {
 }
 
 output mainAppServiceUrl string = appServiceModule.outputs.appServiceUrl
+output appPrincipalId string = appServiceModule.outputs.managedIdentityPrincipalId

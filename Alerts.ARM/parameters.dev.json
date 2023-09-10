@@ -11,6 +11,9 @@
     },
     "alertsPipelineObjectId": {
       "value": "ffe0a221-02cc-4651-a050-6cb26987cf9e"
+    },
+    "appPrincipalId": {
+      "value": ""
     }
   }
 }

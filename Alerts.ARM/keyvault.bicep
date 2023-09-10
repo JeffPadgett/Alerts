@@ -27,7 +27,7 @@ resource keyVaultAccessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-
         objectId: alertsPipelineObjectId
         permissions: {
           secrets: [
-            'get', 'set'
+            'get', 'set', 'list'
           ]
         }
       }

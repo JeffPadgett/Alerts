@@ -10,5 +10,6 @@ module keyVaultModule './keyvault.bicep' = {
     location: location
     skuName: skuName
     alertsPipelineObjectId: alertsPipelineObjectId
+    appServicePrincipalId: appService.outputs.identity.principalId
   }
 }
