@@ -1,4 +1,11 @@
+using Alerts.Api.Services;
+using Microsoft.Extensions.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddSingleton<IKeyVaultService, KeyVaultService>();
+builder.Services.AddSingleton<AppSecrets>();
+builder.Services.AddHostedService<KeyVaultLoaderService>();
 
 // Add services to the container.
 

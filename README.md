@@ -13,48 +13,12 @@ This project aims to create a seamless integration between Twitch alerts and var
 
 ## Prerequisites
 
-- .NET Core SDK 3.1 or higher
+- .NET Core SDK 6 or higher
 - A Twitch account with Developer Application registered
 - Discord Bot Token (if using Discord)
 - Any additional service-specific requirements
 
 ## Getting Started
-
-### Setup
-
-1. Clone the repository.
-
-    ```bash
-    git clone https://github.com/your-username/twitch-alert-api.git
-    ```
-
-2. Navigate to the project directory and restore the packages.
-
-    ```bash
-    cd twitch-alert-api
-    dotnet restore
-    ```
-
-3. Add the necessary environment variables or update the `appsettings.json` file with your credentials.
-
-### Running the Application
-
-```bash
-dotnet run
-```
-
-### Testing Webhooks
-
-You can use Postman or CURL to test the API endpoints. Example CURL request:
-
-```bash
-curl --request POST 'http://localhost:5000/api/alert' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "event": "new_follower",
-    "username": "new_follower_username"
-}'
-```
 
 ## Usage
 
@@ -62,28 +26,11 @@ curl --request POST 'http://localhost:5000/api/alert' \
 - **Twitch to Slack**: To set up notifications for Twitch to Slack, follow the steps in the `docs/twitch-to-slack.md` guide.
 - **More services**: Additional guides can be found in the `docs/` directory.
 
-## API Endpoints
+Notes for myself:
+This project is uses a CI/CD from azure devops to  templates to generate ARM templates, it generates the core infrastructure resources in a seperate resource group, and then generates it's app sepecific resources. 
 
-- `/api/alert/new_follower` - POST: Trigger a new follower alert
-- `/api/alert/new_subscription` - POST: Trigger a new subscription alert
-- `/api/alert/new_donation` - POST: Trigger a new donation alert
+## twitch docs
+https://dev.twitch.tv/docs/eventsub/handling-webhook-events/#verifying-the-event-message
 
-Detailed API documentation is available at `http://localhost:5000/swagger`.
-
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute to this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-## Acknowledgments
-
-- Twitch API documentation
-- Discord API documentation
-- And many more...
-
----
-
-Feel free to modify this template to better match the specifics of your project!
+## DevOps
+https://dev.azure.com/PadgettDevelopment/Alerts
