@@ -1,4 +1,5 @@
 using Alerts.Api.Dto;
+using Alerts.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
@@ -10,6 +11,12 @@ namespace Alerts.Api.Controllers
     [Route("api/[controller]")]
     public class TwitchWebHookController : ControllerBase
     {
+        private readonly AppSecrets _secrets;
+        public TwitchWebHookController()
+        {
+            _secrets = new AppSecrets();
+        }
+
         [HttpPost]
         public async Task<IActionResult> ReceiveWebhook()
         {
@@ -33,8 +40,7 @@ namespace Alerts.Api.Controllers
             CallbackVerification callbackVerification = JsonSerializer.Deserialize<CallbackVerification>(requestBody);
             string hmacMessage = req.Headers["Twitch-Eventsub-Message-Id"] + req.Headers["Twitch-Eventsub-Message-Timestamp"] + requestBody;
 
-            var expectedSignature = "sha256=" + CreateHmacHash(hmacMessage, Environment.GetEnvironmentVariable("EventSubSecret"));//You are going to need to either put this in azure key vault later or set the env variable in an appservice once it's hosted in azure. 
-
+            var expectedSignature = "sha256=" + CreateHmacHash(hmacMessage, _secrets.EventSubSecret!);
             return default;
         }
 

@@ -3,6 +3,7 @@ param location string = resourceGroup().location
 param skuName string
 param alertsPipelineObjectId string
 param appPrincipalId string
+param localUserObjectId string
 
 
 resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
@@ -36,6 +37,15 @@ resource keyVaultAccessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2022-07-
       {
         tenantId: subscription().tenantId
         objectId: appPrincipalId
+        permissions:{
+          secrets: [
+            'all'
+          ]
+        }
+      }
+      {
+        tenantId: subscription().tenantId
+        objectId: localUserObjectId
         permissions:{
           secrets: [
             'all'

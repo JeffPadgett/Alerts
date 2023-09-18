@@ -14,6 +14,9 @@
     },
     "appPrincipalId": {
       "value": "ReplacedDuringCicd"
+    },
+    "localUserObjectId": {
+      "value": "003f5c72-7c25-40c7-943d-feb69a956890"
     }
   }
 }
