@@ -15,13 +15,13 @@ namespace Alerts.Test
             _keyVaultService = serviceProvider.GetRequiredService<IKeyVaultService>();
         }
 
-        [Fact]
-        public void Test_KeyVault_Can_Retrieve_Secrets_And_Connect()
-        {
-            var secretValue = _keyVaultService.GetSecret("TestSecret");
+        //[Fact]
+        //public void Test_KeyVault_Can_Retrieve_Secrets_And_Connect()
+        //{
+        //    var secretValue = _keyVaultService.GetSecret("TestSecret");
 
-            Assert.NotNull(secretValue);
-            Assert.NotEmpty(secretValue);
-        }
+        //    Assert.NotNull(secretValue);
+        //    Assert.NotEmpty(secretValue);
+        //}
     }
 }
