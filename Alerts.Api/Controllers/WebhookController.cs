@@ -18,7 +18,7 @@ namespace Alerts.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReceiveWebhook()
+        public Task<IActionResult> ReceiveWebhook()
         {
             if (Request.Headers.ContainsKey("Twitch-Eventsub-Message-Type"))
             {
