@@ -1,5 +1,5 @@
-using Alerts.Api.Dto;
 using Alerts.Api.Services;
+using Alerts.Core.Dto;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 using System.Text;
@@ -11,50 +11,51 @@ namespace Alerts.Api.Controllers
     [Route("api/[controller]")]
     public class TwitchWebHookController : ControllerBase
     {
+        private const string WebhookCallbackVerification = "webhook_callback_verification";
+        private const string Sha256Prefix = "sha256=";
+
         private readonly AppSecrets _secrets;
-        public TwitchWebHookController()
+
+        public TwitchWebHookController(AppSecrets secrets)
         {
-            _secrets = new AppSecrets();
+            _secrets = secrets;
         }
 
         [HttpPost]
         public async Task<IActionResult> ReceiveWebhook()
         {
-            if (Request.Headers.ContainsKey("Twitch-Eventsub-Message-Type"))
+            if (Request.Headers["Twitch-Eventsub-Message-Type"] == WebhookCallbackVerification &&
+                await VerifySignature(Request) is string signature &&
+                !string.IsNullOrEmpty(signature))
             {
-                string messageType = Request.Headers["Twitch-Eventsub-Message-Type"];
-                if (messageType == "webhook_callback_verification")
-                {
-
-                }
+                return Ok(signature);
             }
 
-            return Ok(); 
+            return BadRequest("Failed verification.");
         }
 
-        private async Task<string> VerifySignature(HttpRequest req)
+        private async Task<string?> VerifySignature(HttpRequest req)
         {
             using StreamReader reader = new StreamReader(Request.Body);
             string requestBody = await reader.ReadToEndAsync();
 
-            CallbackVerification callbackVerification = JsonSerializer.Deserialize<CallbackVerification>(requestBody);
+            VerificationChallenge verificationChallenge = JsonSerializer.Deserialize<VerificationChallenge>(requestBody)!;
             string hmacMessage = req.Headers["Twitch-Eventsub-Message-Id"] + req.Headers["Twitch-Eventsub-Message-Timestamp"] + requestBody;
 
-            var expectedSignature = "sha256=" + CreateHmacHash(hmacMessage, _secrets.EventSubSecret!);
-            return default;
+            var expectedSignature = Sha256Prefix + CreateHmacHash(hmacMessage, _secrets.EventSubSecret!);
+
+            return expectedSignature == req.Headers["Twitch-Eventsub-Message-Signature"] ? verificationChallenge.Challenge : null;
         }
 
         private string CreateHmacHash(string data, string key)
         {
-            var keybytes = UTF8Encoding.UTF8.GetBytes(key);
-            var dataBytes = UTF8Encoding.UTF8.GetBytes(data);
+            var keybytes = Encoding.UTF8.GetBytes(key);
+            var dataBytes = Encoding.UTF8.GetBytes(data);
 
-            using (var hmac = new HMACSHA256(keybytes))
-            {
-                var hmacBytes = hmac.ComputeHash(dataBytes);
-                return BitConverter.ToString(hmacBytes).Replace("-", "").ToLower();
-            }
+            using var hmac = new HMACSHA256(keybytes);
+            var hmacBytes = hmac.ComputeHash(dataBytes);
+
+            return BitConverter.ToString(hmacBytes).Replace("-", "").ToLower();
         }
     }
-
 }

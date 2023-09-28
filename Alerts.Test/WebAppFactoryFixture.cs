@@ -1,16 +1,38 @@
 ﻿//Think of this as basically our DI container - We are creating a "Fixture" that can be utilized in our test classes throughout the xunit project. 
-
+using Alerts.Api.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Alerts.Test
 {
     public class WebAppFactoryFixture : IDisposable
     {
         public WebApplicationFactory<Program> Factory { get; }
+        public IKeyVaultService KeyVaultService { get; private set; }
 
         public WebAppFactoryFixture()
         {
             Factory = new WebApplicationFactory<Program>();
+
+            var serviceCollection = new ServiceCollection();
+
+            // Build configuration
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
+
+            serviceCollection.AddSingleton<IConfiguration>(configuration);
+            serviceCollection.AddSingleton<IKeyVaultService, KeyVaultService>();
+            serviceCollection.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.AddConsole();
+            });
+
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+            KeyVaultService = serviceProvider.GetRequiredService<IKeyVaultService>();
         }
 
         public void Dispose()

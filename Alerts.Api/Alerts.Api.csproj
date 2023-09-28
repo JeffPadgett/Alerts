@@ -18,7 +18,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include ="Alerts.Test"/>
+		<InternalsVisibleTo Include="Alerts.Test" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Dto\" />
 	</ItemGroup>
 
 </Project>
