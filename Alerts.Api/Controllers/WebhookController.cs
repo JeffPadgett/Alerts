@@ -18,7 +18,7 @@ namespace Alerts.Api.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> ReceiveWebhook()
+        public async Task<IActionResult> ReceiveWebhook()
         {
             if (Request.Headers.ContainsKey("Twitch-Eventsub-Message-Type"))
             {
@@ -29,7 +29,7 @@ namespace Alerts.Api.Controllers
                 }
             }
 
-            return default; 
+            return Ok(); 
         }
 
         private async Task<string> VerifySignature(HttpRequest req)

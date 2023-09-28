@@ -1,5 +1,7 @@
 using Alerts.Api.Services;
-using Microsoft.Extensions.DependencyInjection;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Alerts.Test")]//All this does is help us get the dependencies in our test project. 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +25,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -31,3 +32,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program { }
